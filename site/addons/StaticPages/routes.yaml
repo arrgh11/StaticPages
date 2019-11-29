@@ -1,4 +1,10 @@
 routes:
   /: index
+  /new: 
+    uses: getNew
+    as: staticpages.new
   /edit/{request}: 
     uses: getEdit
+  post@store:
+    uses: addNew
+    as: staticpages.store

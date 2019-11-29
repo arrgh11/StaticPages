@@ -1,6 +1,12 @@
 @extends('layout')
 
 @section('content')
+<script>
+    Statamic.Publish = {
+        contentData: {!! json_encode($page) !!},
+        fieldset: {!! json_encode($fieldset) !!},
+    };
+</script>
 <div class="flex flex-wrap items-center w-full sticky -mx-3"> 
 	<h1 class="w-full my-1 text-center lg:text-left lg:flex-1"> 
 		<span>Static Pages</span> 
@@ -8,14 +14,22 @@
 	<div class="controls flex flex-wrap items-center w-full lg:w-auto justify-center">  
 		<div class="mr-2 my-1">   
 		</div>   
-		<div class="btn-group btn-group-primary my-1"> 
+		{{-- <div class="btn-group btn-group-primary my-1"> 
 			<button type="button" class="btn btn-primary">Upload Archive</button>
-		</div>
+		</div> --}}
 	</div>
 </div>
 
 <div class="w-full -mx-3">
-	{{$page}}
+	<div class="page-tree mx-3">
+
+		<publish 
+			title="New Static Page"
+			content-type="addon"
+            submit-url="{{ $submitUrl }}"
+            id="{{ $page['id'] }}"
+	    ></publish>
+	</div>
 </div>
 
 @endsection

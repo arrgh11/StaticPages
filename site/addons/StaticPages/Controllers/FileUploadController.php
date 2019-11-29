@@ -97,4 +97,18 @@ class FileUploadController extends Controller
             'message' => $message
         ];
     }
+
+
+    private function unzip() {
+    	$zip = new ZipArchive;
+		if ($zip->open('test.zip') === TRUE) {
+		    $zip->extractTo('/my/destination/dir/');
+		    $zip->close();
+		    echo 'ok';
+		} else {
+		    echo 'failed';
+		}
+    }
+
+
 }

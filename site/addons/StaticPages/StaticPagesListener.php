@@ -4,6 +4,7 @@ namespace Statamic\Addons\StaticPages;
 
 use Statamic\API\Nav;
 use Statamic\Extend\Listener;
+use Statamic\API\AssetContainer;
 
 class StaticPagesListener extends Listener
 {
@@ -13,23 +14,31 @@ class StaticPagesListener extends Listener
      * @var array
      */
     public $events = [
-        'cp.nav.created' => 'addNavItems'
+        'cp.nav.created' => 'addNavItems',
+        'AssetUploaded' => 'assetUploaded'
     ];
 
     public function addNavItems($nav)
     {
-        // Create the first level navigation item
-        // Note: by using route('store'), it assumes you've set up a route named 'store'.
-        $store = Nav::item('Static Pages')->url('/cp/addons/static-pages')->icon('flow-tree');
+        $this->api('StaticPages')->assetContainer();
+        $pages = Nav::item('Static Pages')->url('/cp/addons/static-pages')->icon('flow-tree');
+        $nav->addTo('content', $pages);
+    }
 
-        // Add second level navigation items to it
-        // $store->add(function ($item) {
-        //     $item->add(Nav::item('Products')->route('store.products'));
-        //     $item->add(Nav::item('Orders')->route('store.orders'));
-        // });
+    public function assetUploaded($event) 
+    {
+    	$hi = AssetContainer::all();
+        dd($hi);
+    	$event->affectedPaths();
+	    // An array of file paths that have been affected by the action.
+	    // For example:
+	    // [
+	    //     /path/to/content/pages/oldpageslug/index.md, 
+	    //     /path/to/content/pages/newpageslug/index.md
+	    // ]
 
-        // Finally, add our first level navigation item
-        // to the navigation under the 'tools' section.
-        $nav->addTo('content', $store);
+	    $event->contextualData();
+	    // An array representation of the item that was saved.
+	    // For example, the data in a page, or an array of configuration settings.
     }
 }

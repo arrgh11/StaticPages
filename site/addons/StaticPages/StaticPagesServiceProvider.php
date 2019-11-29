@@ -4,6 +4,7 @@ namespace Statamic\Addons\StaticPages;
 
 use Statamic\Extend\ServiceProvider;
 
+
 class StaticPagesServiceProvider extends ServiceProvider
 {
     /**
@@ -13,7 +14,15 @@ class StaticPagesServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        // $this->api('StaticPages')->assetContainer();
+        // $hi = AssetContainer::all();
+        // dd($hi);
         //
+        // if (!AssetContainer::find('staticpages')) {
+        //     $new = AssetContainer::create();
+        //     // $new->id('staticpages');
+        //     // $new->save();
+        // }
     }
 
     /**
@@ -23,6 +32,6 @@ class StaticPagesServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        // $hi = AssetContainer::all();
     }
 }

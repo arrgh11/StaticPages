@@ -1,0 +1,17 @@
+title: Static Site
+fields:
+  title:                # The template tag, i.e. {{ content }}
+    display: Page Name      # The CP field label
+    type: text        # The fieldtype
+    instructions: The name of the page.  # Instructional text
+  route:
+    display: URL Path
+    type: text
+    instructions: How to find your page on your site
+  archive:
+    display: Webpage archive
+    type: assets
+    instructions: A zip file containing all the necessary files/folders for your page
+    container: staticpages
+    max_files: 1
+    validate: "ext:zip"

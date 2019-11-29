@@ -9,7 +9,7 @@
 		<div class="mr-2 my-1">   
 		</div>   
 		<div class="btn-group btn-group-primary my-1"> 
-			<button type="button" class="btn btn-primary">Upload Archive</button>
+			<a role="button" href="{{$newUrl}}" class="btn btn-primary">Upload Archive</a>
 		</div>
 	</div>
 </div>
