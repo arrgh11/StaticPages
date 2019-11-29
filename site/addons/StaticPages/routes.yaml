@@ -1,0 +1,4 @@
+routes:
+  /: index
+  /edit/{request}: 
+    uses: getEdit
