@@ -4,10 +4,12 @@ fields:
     display: Page Name      # The CP field label
     type: text        # The fieldtype
     instructions: The name of the page.  # Instructional text
+    required: true
   route:
     display: URL Path
     type: text
-    instructions: How to find your page on your site
+    instructions: How to find your page on your site. Prepended with '/staticpages/'
+    required: true
   archive:
     display: Webpage archive
     type: assets
@@ -15,3 +17,5 @@ fields:
     container: staticpages
     max_files: 1
     validate: "ext:zip"
+    required: true
+    restrict: true

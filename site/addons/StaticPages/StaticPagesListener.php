@@ -22,22 +22,7 @@ class StaticPagesListener extends Listener
         $this->api('StaticPages')->assetContainer();
         $pages = Nav::item('Static Pages')->url('/cp/addons/static-pages')->icon('flow-tree');
         $nav->addTo('content', $pages);
+        // $nav->remove('content.assets.browse.staticpages');
     }
 
-    public function assetUploaded($event) 
-    {
-    	// $hi = AssetContainer::all();
-        
-    	// $event->affectedPaths();
-	    // An array of file paths that have been affected by the action.
-	    // For example:
-	    // [
-	    //     /path/to/content/pages/oldpageslug/index.md, 
-	    //     /path/to/content/pages/newpageslug/index.md
-	    // ]
-
-	    // $event->contextualData();
-	    // An array representation of the item that was saved.
-	    // For example, the data in a page, or an array of configuration settings.
-    }
 }

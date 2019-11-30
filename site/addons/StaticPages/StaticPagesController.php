@@ -37,6 +37,7 @@ class StaticPagesController extends Controller
         	'pages'=>$pages,
         	'newUrl' => route('staticpages.new')
         ]);
+        // $this->api('StaticPages')->modifyRoutes($pages[0]);
     }
 
     public function getNew()
@@ -74,11 +75,16 @@ class StaticPagesController extends Controller
 
     public function deletePage($id)
     {
+
     	$pages = $this->storage->getJSON('pages');
     	$the_page = "";
     	foreach ($pages as $key=>$page) {
     		if ($page['id'] == $id) {
     			$the_page = $page;
+    			if (is_dir('staticpages/'.$page['route'])) {
+    				$this->delTree('staticpages/'.$page['route']);	
+    			}
+    			
     			unset($pages[$key]);
     		}
     	}
@@ -121,19 +127,21 @@ class StaticPagesController extends Controller
     		'id'=>$id)
     	);
     	$this->storage->putJSON('pages', $pages);
-   		$result = $this->api('StaticPages')->expandArchive($data);
-   		// if (!$result) {
-   		// 	return [
-	    //         'success'  => false,
-	    //         'redirect' => route('staticpages.home'),
-	    //         'message' => "Error"
-	    //     ];
-   		// }
-   		return [
+    	$result = $this->api('StaticPages')->expandArchive($data);
+    	if (!$result) {
+    		return [
+	            'success'  => false,
+	            'redirect' => route('staticpages.home'),
+	            'message' => "There was an error"
+	        ];
+    	}
+    	$this->api('StaticPages')->modifyRoutes($data);
+		return [
             'success'  => true,
             'redirect' => route('staticpages.home'),
-            'message' => $result
+            'message' => "Successfully added Page"
         ];
+   		
     }
 
     protected function fieldset()
@@ -156,5 +164,16 @@ class StaticPagesController extends Controller
     {
         return $this->preProcessWithBlankFields($this->fieldset(), $data);
     }
+
+    function delTree($dir)
+    { 
+        $files = array_diff(scandir($dir), array('.', '..')); 
+
+        foreach ($files as $file) { 
+            (is_dir("$dir/$file")) ? $this->delTree("$dir/$file") : unlink("$dir/$file"); 
+        }
+
+        return rmdir($dir); 
+    } 
 
 }
