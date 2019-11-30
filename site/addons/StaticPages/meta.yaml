@@ -1,6 +1,0 @@
-name: StaticPages
-version: '1.0'
-description: 'Allow upload of static html page to Statamic'
-developer: 'Sam Miller'
-developer_url: github.com/arrgh11
-commercial: true
