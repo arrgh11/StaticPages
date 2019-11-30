@@ -29,15 +29,12 @@ class StaticPagesController extends Controller
 
 
 		$all = Asset::all();
-		// dd(AssetContainer::all());
-		// $this->storage->putJSON('pages', array(array('name'=>'boy', 'id'=>1)));
-		$pages = $this->storage->getJSON('pages');
+        $pages = $this->storage->getJSON('pages');
 
         return $this->view('index', [
         	'pages'=>$pages,
         	'newUrl' => route('staticpages.new')
         ]);
-        // $this->api('StaticPages')->modifyRoutes($pages[0]);
     }
 
     public function getNew()
