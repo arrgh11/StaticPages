@@ -19,7 +19,7 @@ class StaticPagesListener extends Listener
 
     public function addNavItems($nav)
     {
-        $this->api('StaticPages')->assetContainer();
+        $this->api('StaticPages')->assetContainer('remove');
         $pages = Nav::item('Static Pages')->url('/cp/addons/static-pages')->icon('flow-tree');
         $nav->addTo('content', $pages);
         // $nav->remove('content.assets.browse.staticpages');

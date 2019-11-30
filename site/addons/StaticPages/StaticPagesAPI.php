@@ -13,16 +13,19 @@ class StaticPagesAPI extends API
     /**
      * Accessed by $this->api('StaticPages')->example() from other addons
      */
-    public function assetContainer()
+    public function assetContainer($mode)
     {
+      if ($mode == 'add') {
         if (AssetContainer::find('staticpages') == null) {
 
             File::copy('site/addons/StaticPages/staticpages.yaml', 'site/content/assets/staticpages.yaml', true);
             // 
-        } else {
-           // dd('hi'); 
         }
-        // 
+      } elseif ($mode == 'remove') {
+        if (AssetContainer::find('staticpages') !== null) {
+            File::delete('site/content/assets/staticpages.yaml');
+        }
+      }
     }
 
     public function expandArchive($data)

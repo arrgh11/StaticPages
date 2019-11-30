@@ -44,6 +44,7 @@ class StaticPagesController extends Controller
     {
 
     	$fieldset = $this->fieldset();
+        $this->api('StaticPages')->assetContainer('add');
 
     	return $this->view('edit', [
     		'id' => null,
@@ -57,6 +58,7 @@ class StaticPagesController extends Controller
     {
 
     	$fieldset = $this->fieldset();
+        $this->api('StaticPages')->assetContainer('add');
 
     	$pages = $this->storage->getJSON('pages');
     	$the_page = "";

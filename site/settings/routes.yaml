@@ -23,3 +23,4 @@ taxonomies:
   tags: '/blog/tags/{slug}'
 vanity:
   /staticpages/marshill: /staticpages/marshill/index.html
+  /staticpages/test: /staticpages/test/index.html
