@@ -13,19 +13,27 @@
 		</div>
 	</div>
 </div>
-@if($assets !== null)
+@if($pages !== null)
 <div class="w-full -mx-3">
 	<div class="page-tree mx-3">
 		<ul class="tree-home list-unstyled">
-			@foreach($assets as $asset)
+			@foreach($pages as $page)
 				<li class="branch"> 
-					<div class="branch-row w-full flex items-center">
-						<div class="flex items-center flex-1 p-1"> 
-							<div class="page-text"> 
-								<a class="page-title" href="/cp/addons/static-pages/edit/{{$asset['id']}}">
-									{{$asset['name']}}
+					<div class="branch-row w-full items-center">
+						<div class="flex justify-between items-center p-1"> 
+							<div class="page-text "> 
+								<a class="page-title" href="{{$page['edit']}}">
+									{{$page['title']}}
 								</a> 
-							</div>   
+							</div>  
+							<div class="btn-group action-more">
+	                            <button type="button" class="btn-more dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="icon icon-dots-three-vertical"></i> </button>
+	                            <ul class="dropdown-menu">
+	                                <li class="warning">
+	                                    <a href="{{$page['delete']}}" title="Delete this menu">Delete</a>
+	                                </li>
+	                            </ul>
+	                        </div> 
 						</div>
 					</div>
 				</li>

@@ -15,7 +15,6 @@ class StaticPagesListener extends Listener
      */
     public $events = [
         'cp.nav.created' => 'addNavItems',
-        'AssetUploaded' => 'assetUploaded'
     ];
 
     public function addNavItems($nav)
@@ -27,9 +26,9 @@ class StaticPagesListener extends Listener
 
     public function assetUploaded($event) 
     {
-    	$hi = AssetContainer::all();
-        dd($hi);
-    	$event->affectedPaths();
+    	// $hi = AssetContainer::all();
+        
+    	// $event->affectedPaths();
 	    // An array of file paths that have been affected by the action.
 	    // For example:
 	    // [
@@ -37,7 +36,7 @@ class StaticPagesListener extends Listener
 	    //     /path/to/content/pages/newpageslug/index.md
 	    // ]
 
-	    $event->contextualData();
+	    // $event->contextualData();
 	    // An array representation of the item that was saved.
 	    // For example, the data in a page, or an array of configuration settings.
     }

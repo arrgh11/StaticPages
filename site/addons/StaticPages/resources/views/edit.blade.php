@@ -22,13 +22,12 @@
 
 <div class="w-full -mx-3">
 	<div class="page-tree mx-3">
-
-		<publish 
-			title="New Static Page"
-			content-type="addon"
-            submit-url="{{ $submitUrl }}"
-            id="{{ $page['id'] }}"
-	    ></publish>
+	    <publish title="{{ $id ? $page['title'] : 'New Static Page' }}"
+             :is-new="{{ bool_str($id === null) }}"
+             content-type="addon"
+             submit-url="{{ $submitUrl }}"
+             id="{{ $id }}"
+    ></publish>
 	</div>
 </div>
 

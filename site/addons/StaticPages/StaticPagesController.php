@@ -2,6 +2,7 @@
 
 namespace Statamic\Addons\StaticPages;
 
+use Statamic\API\Helper;
 use Statamic\API\File;
 use Statamic\API\YAML;
 use Statamic\API\Fieldset;
@@ -33,7 +34,7 @@ class StaticPagesController extends Controller
 		$pages = $this->storage->getJSON('pages');
 
         return $this->view('index', [
-        	'assets'=>$pages,
+        	'pages'=>$pages,
         	'newUrl' => route('staticpages.new')
         ]);
     }
@@ -43,9 +44,9 @@ class StaticPagesController extends Controller
 
     	$fieldset = $this->fieldset();
 
-    	return $this->view('new', [
+    	return $this->view('edit', [
     		'id' => null,
-    		'page' => [],
+    		'page' => $this->prepareData([]),
     		'fieldset' => $fieldset->toPublishArray(),
     		'submitUrl' => route('staticpages.store')
     	]);
@@ -64,17 +65,75 @@ class StaticPagesController extends Controller
     		}
     	}
     	return $this->view('edit', [
-    		'page'=>$the_page,
+    		'id' => $request,
+    		'page'=>$this->prepareData($the_page),
     		'fieldset' => $fieldset->toPublishArray(),
-    		'submitUrl' => route('staticpages.store')
+    		'submitUrl' => route('staticpages.update')
     	]);
+    }
+
+    public function deletePage($id)
+    {
+    	$pages = $this->storage->getJSON('pages');
+    	$the_page = "";
+    	foreach ($pages as $key=>$page) {
+    		if ($page['id'] == $id) {
+    			$the_page = $page;
+    			unset($pages[$key]);
+    		}
+    	}
+    	$this->storage->putJSON('pages', $pages);
+    	return redirect(route('staticpages.home'));
+    }
+
+    public function update(Request $request) {
+    	$data = $this->processFields($this->fieldset(), $request->fields);
+    	$id = $request->uuid;
+    	$old_pages = $this->storage->getJSON('pages');
+    	$pages = $old_pages;
+    	foreach ($pages as $page) {
+    		if ($page['id'] == $id) {
+    			$page['title'] = $data['title'];
+    			$page['route'] = $data['route'];
+    			$page['archive'] = $data['archive'];
+    		}
+    	}
+    	$this->storage->putJSON('pages', $pages);
+    	return [
+            'success'  => true,
+            'redirect' => route('staticpages.home'),
+            'message' => "Successfully updated ".$data['title']
+        ];
     }
 
     public function addNew(Request $request)
     {
     	// dd(request->all());
     	$data = $this->processFields($this->fieldset(), $request->fields);
-    	// $asset_asset->upload(UploadedFile $file);
+    	$id = Helper::makeUuid();
+    	$pages = $this->storage->getJSON('pages');
+    	array_push($pages, array(
+    		'title'=>$data['title'], 
+    		'route'=>$data['route'], 
+    		'archive'=>$data['archive'],
+    		'edit' => route('staticpages.edit', ['id'=> $id]),
+    		'delete' => route('staticpages.delete', ['id'=>$id]),
+    		'id'=>$id)
+    	);
+    	$this->storage->putJSON('pages', $pages);
+   		$result = $this->api('StaticPages')->expandArchive($data);
+   		// if (!$result) {
+   		// 	return [
+	    //         'success'  => false,
+	    //         'redirect' => route('staticpages.home'),
+	    //         'message' => "Error"
+	    //     ];
+   		// }
+   		return [
+            'success'  => true,
+            'redirect' => route('staticpages.home'),
+            'message' => $result
+        ];
     }
 
     protected function fieldset()
@@ -82,6 +141,20 @@ class StaticPagesController extends Controller
         $contents = File::get($this->getDirectory().'/resources/fieldsets/content.yaml');
         $fieldset = Fieldset::create('defaults', YAML::parse($contents));
         return $fieldset;
+    }
+    /**
+     * Prepare the data for the view.
+     *
+     * Vue needs to have at least null values available from the start in order
+     * to properly set up the reactivity. The data in the contentstore is not
+     * guaranteed to have every single field. This method will add the
+     * appropriate null values based on the provided fieldset.
+     *
+     * @return array
+     */
+    private function prepareData($data)
+    {
+        return $this->preProcessWithBlankFields($this->fieldset(), $data);
     }
 
 }
