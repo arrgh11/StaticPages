@@ -10,9 +10,6 @@ use ZipArchive as ZipArchive;
 
 class StaticPagesAPI extends API
 {
-    /**
-     * Accessed by $this->api('StaticPages')->example() from other addons
-     */
     public function assetContainer($mode)
     {
       if ($mode == 'add') {
@@ -30,7 +27,6 @@ class StaticPagesAPI extends API
 
     public function expandArchive($data)
     {
-        // dd($data['archive']);
         $zip = new ZipArchive;
         $ZIP_ERROR = [
           ZipArchive::ER_EXISTS => 'File already exists.',
@@ -50,12 +46,9 @@ class StaticPagesAPI extends API
            dd($msg);
         }
         $path = 'staticpages/'.$data['route'];
-        // dd($path);
         if ($zip->extractTo($path)) {
             $zip->close();
-            // return true;
         } else {
-            // dd('fuck1');
             return false;
         }
         return true;
@@ -64,7 +57,6 @@ class StaticPagesAPI extends API
     public function modifyRoutes($new, $old=null)
     {
         $routes = YAML::parse(File::get('site/settings/routes.yaml'));
-        // dd($routes);
         $vanity_routes = array();
         if (isset($routes['vanity']) && !empty($routes['vanity'])) {
             $vanity_routes = $routes['vanity'];
