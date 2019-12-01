@@ -113,7 +113,6 @@ class StaticPagesController extends Controller
 
     public function addNew(Request $request)
     {
-    	// dd(request->all());
     	$data = $this->processFields($this->fieldset(), $request->fields);
     	$id = Helper::makeUuid();
     	$pages = $this->storage->getJSON('pages');
@@ -149,16 +148,7 @@ class StaticPagesController extends Controller
         $fieldset = Fieldset::create('defaults', YAML::parse($contents));
         return $fieldset;
     }
-    /**
-     * Prepare the data for the view.
-     *
-     * Vue needs to have at least null values available from the start in order
-     * to properly set up the reactivity. The data in the contentstore is not
-     * guaranteed to have every single field. This method will add the
-     * appropriate null values based on the provided fieldset.
-     *
-     * @return array
-     */
+	
     private function prepareData($data)
     {
         return $this->preProcessWithBlankFields($this->fieldset(), $data);
