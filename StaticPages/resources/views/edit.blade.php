@@ -14,9 +14,6 @@
 	<div class="controls flex flex-wrap items-center w-full lg:w-auto justify-center">  
 		<div class="mr-2 my-1">   
 		</div>   
-		{{-- <div class="btn-group btn-group-primary my-1"> 
-			<button type="button" class="btn btn-primary">Upload Archive</button>
-		</div> --}}
 	</div>
 </div>
 
